@@ -12,6 +12,7 @@ type ContentItem = {
   id: string;
   title: string;
   description: string;
+  imageFile?: File | null;
   imageUrl: string;
   type: 'benefit' | 'ingredient' | 'testimonial';
 };
@@ -26,6 +27,7 @@ type AdminContextType = {
   addContentItem: (item: Omit<ContentItem, 'id'>) => void;
   updateContentItem: (id: string, item: Partial<Omit<ContentItem, 'id'>>) => void;
   deleteContentItem: (id: string) => void;
+  uploadImage: (file: File) => Promise<string>;
 };
 
 // Default values
@@ -39,12 +41,22 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(
-    JSON.parse(localStorage.getItem('adminColorScheme') || JSON.stringify(defaultColorScheme))
-  );
-  const [contentItems, setContentItems] = useState<ContentItem[]>(
-    JSON.parse(localStorage.getItem('adminContentItems') || '[]')
-  );
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(() => {
+    const saved = localStorage.getItem('adminColorScheme');
+    return saved ? JSON.parse(saved) : defaultColorScheme;
+  });
+  
+  const [contentItems, setContentItems] = useState<ContentItem[]>(() => {
+    const saved = localStorage.getItem('adminContentItems');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Apply color scheme to CSS variables
+  useEffect(() => {
+    document.documentElement.style.setProperty('--color-primary', colorScheme.primary);
+    document.documentElement.style.setProperty('--color-secondary', colorScheme.secondary);
+    document.documentElement.style.setProperty('--color-accent', colorScheme.accent);
+  }, [colorScheme]);
 
   // Persist state to localStorage
   useEffect(() => {
@@ -80,21 +92,51 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateColorScheme = (colors: Partial<ColorScheme>) => {
-    setColorScheme(prev => ({ ...prev, ...colors }));
+    setColorScheme(prev => {
+      const newColorScheme = { ...prev, ...colors };
+      return newColorScheme;
+    });
   };
 
-  const addContentItem = (item: Omit<ContentItem, 'id'>) => {
+  // Function to handle image uploads
+  const uploadImage = async (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Convert file to data URL
+        resolve(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const addContentItem = async (item: Omit<ContentItem, 'id'>) => {
+    let imageUrl = item.imageUrl;
+    
+    if (item.imageFile) {
+      imageUrl = await uploadImage(item.imageFile);
+    }
+    
     const newItem = {
       ...item,
+      imageUrl,
       id: `item-${Date.now()}`
     };
+    
     setContentItems(prev => [...prev, newItem]);
   };
 
-  const updateContentItem = (id: string, item: Partial<Omit<ContentItem, 'id'>>) => {
+  const updateContentItem = async (id: string, item: Partial<Omit<ContentItem, 'id'>>) => {
+    let updates = { ...item };
+    
+    if (item.imageFile) {
+      const imageUrl = await uploadImage(item.imageFile);
+      updates = { ...updates, imageUrl };
+    }
+    
     setContentItems(prev => 
       prev.map(contentItem => 
-        contentItem.id === id ? { ...contentItem, ...item } : contentItem
+        contentItem.id === id ? { ...contentItem, ...updates } : contentItem
       )
     );
   };
@@ -113,6 +155,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     addContentItem,
     updateContentItem,
     deleteContentItem,
+    uploadImage
   };
 
   return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,12 +19,27 @@ const AdminSettings = () => {
     accent: colorScheme.accent,
   });
 
+  // Update local state when context changes
+  useEffect(() => {
+    setColors({
+      primary: colorScheme.primary,
+      secondary: colorScheme.secondary,
+      accent: colorScheme.accent,
+    });
+  }, [colorScheme]);
+
   const handleColorChange = (key: keyof typeof colors, value: string) => {
     setColors(prev => ({ ...prev, [key]: value }));
   };
 
   const saveColorChanges = () => {
     updateColorScheme(colors);
+    
+    // Apply colors to CSS variables
+    document.documentElement.style.setProperty('--color-primary', colors.primary);
+    document.documentElement.style.setProperty('--color-secondary', colors.secondary);
+    document.documentElement.style.setProperty('--color-accent', colors.accent);
+    
     toast({
       title: "Colors updated",
       description: "Your color scheme changes have been saved.",

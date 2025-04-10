@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Edit, Plus, Trash2, Leaf, Heart, Star } from 'lucide-react';
+import { Edit, Plus, Trash2, Leaf, Heart, Star, Upload } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -19,20 +19,44 @@ const AdminContent = () => {
   const [editingItem, setEditingItem] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'benefit' | 'ingredient' | 'testimonial'>('benefit');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const editFileInputRef = useRef<HTMLInputElement>(null);
 
   const initialNewItem = {
     title: '',
     description: '',
     imageUrl: '',
+    imageFile: null as File | null,
     type: activeTab,
   };
 
   const [newItem, setNewItem] = useState(initialNewItem);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
 
   // Filter content by type
   const filteredContent = contentItems.filter(item => item.type === activeTab);
 
-  const handleAddItem = () => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      
+      reader.onloadend = () => {
+        if (isEdit) {
+          setEditingItem(prev => ({ ...prev, imageFile: file }));
+          setEditImagePreview(reader.result as string);
+        } else {
+          setNewItem(prev => ({ ...prev, imageFile: file }));
+          setImagePreview(reader.result as string);
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddItem = async () => {
     if (!newItem.title || !newItem.description) {
       toast({
         title: "Validation Error",
@@ -42,21 +66,30 @@ const AdminContent = () => {
       return;
     }
 
-    addContentItem({
-      ...newItem,
-      type: activeTab,
-    });
+    try {
+      await addContentItem({
+        ...newItem,
+        type: activeTab,
+      });
 
-    setNewItem(initialNewItem);
-    setIsDialogOpen(false);
+      setNewItem(initialNewItem);
+      setImagePreview(null);
+      setIsDialogOpen(false);
 
-    toast({
-      title: "Item Added",
-      description: `New ${activeTab} item has been added successfully.`,
-    });
+      toast({
+        title: "Item Added",
+        description: `New ${activeTab} item has been added successfully.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add item. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleUpdateItem = () => {
+  const handleUpdateItem = async () => {
     if (!editingItem.title || !editingItem.description) {
       toast({
         title: "Validation Error",
@@ -66,18 +99,27 @@ const AdminContent = () => {
       return;
     }
 
-    updateContentItem(editingItem.id, {
-      title: editingItem.title,
-      description: editingItem.description,
-      imageUrl: editingItem.imageUrl,
-    });
+    try {
+      await updateContentItem(editingItem.id, {
+        title: editingItem.title,
+        description: editingItem.description,
+        imageFile: editingItem.imageFile,
+      });
 
-    setEditingItem(null);
+      setEditingItem(null);
+      setEditImagePreview(null);
 
-    toast({
-      title: "Item Updated",
-      description: `The ${activeTab} item has been updated successfully.`,
-    });
+      toast({
+        title: "Item Updated",
+        description: `The ${activeTab} item has been updated successfully.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update item. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDeleteItem = (id: string) => {
@@ -110,87 +152,133 @@ const AdminContent = () => {
     }
   };
 
+  // Returns the Dialog content for the Add New Item dialog
+  const renderAddItemDialog = () => (
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-noor-olive hover:bg-noor-olive-light text-white">
+          <Plus className="mr-2 h-4 w-4" /> Add New Item
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Add New {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</DialogTitle>
+          <DialogDescription>
+            Create a new content item to display on your website.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="item-type" className="text-right">
+              Type
+            </Label>
+            <Select
+              value={newItem.type}
+              onValueChange={(value) => setNewItem({...newItem, type: value as any})}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="benefit">Benefit</SelectItem>
+                <SelectItem value="ingredient">Ingredient</SelectItem>
+                <SelectItem value="testimonial">Testimonial</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="item-title" className="text-right">
+              Title
+            </Label>
+            <Input
+              id="item-title"
+              value={newItem.title}
+              onChange={(e) => setNewItem({...newItem, title: e.target.value})}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-start gap-4">
+            <Label htmlFor="item-image" className="text-right pt-2">
+              Image
+            </Label>
+            <div className="col-span-3">
+              <input 
+                type="file" 
+                ref={fileInputRef}
+                accept="image/*"
+                onChange={(e) => handleFileChange(e)}
+                className="hidden"
+              />
+              <div className="flex flex-col gap-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-2 w-full"
+                >
+                  <Upload size={16} /> Upload Image
+                </Button>
+                {imagePreview && (
+                  <div className="mt-2 relative w-full h-32 rounded-md overflow-hidden border border-border">
+                    <img 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    <Button 
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-1 right-1 h-6 w-6 p-0"
+                      onClick={() => {
+                        setImagePreview(null);
+                        setNewItem(prev => ({...prev, imageFile: null}));
+                      }}
+                    >
+                      ×
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-4 items-start gap-4">
+            <Label htmlFor="item-description" className="text-right pt-2">
+              Description
+            </Label>
+            <Textarea
+              id="item-description"
+              value={newItem.description}
+              onChange={(e) => setNewItem({...newItem, description: e.target.value})}
+              className="col-span-3"
+              rows={5}
+            />
+          </div>
+        </div>
+        
+        <DialogFooter>
+          <Button variant="outline" onClick={() => {
+            setIsDialogOpen(false);
+            setImagePreview(null);
+            setNewItem(initialNewItem);
+          }}>
+            Cancel
+          </Button>
+          <Button onClick={handleAddItem} className="bg-noor-olive hover:bg-noor-olive-light text-white">
+            Add Item
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
+  // Returns the rest of the component based on what's in the existing file
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-noor-brown">Manage Content</h1>
-        
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-noor-olive hover:bg-noor-olive-light text-white">
-              <Plus className="mr-2 h-4 w-4" /> Add New Item
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle>Add New {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</DialogTitle>
-              <DialogDescription>
-                Create a new content item to display on your website.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="item-type" className="text-right">
-                  Type
-                </Label>
-                <Select
-                  value={newItem.type}
-                  onValueChange={(value) => setNewItem({...newItem, type: value as any})}
-                >
-                  <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="benefit">Benefit</SelectItem>
-                    <SelectItem value="ingredient">Ingredient</SelectItem>
-                    <SelectItem value="testimonial">Testimonial</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="item-title" className="text-right">
-                  Title
-                </Label>
-                <Input
-                  id="item-title"
-                  value={newItem.title}
-                  onChange={(e) => setNewItem({...newItem, title: e.target.value})}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="item-image" className="text-right">
-                  Image URL
-                </Label>
-                <Input
-                  id="item-image"
-                  value={newItem.imageUrl}
-                  onChange={(e) => setNewItem({...newItem, imageUrl: e.target.value})}
-                  className="col-span-3"
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-start gap-4">
-                <Label htmlFor="item-description" className="text-right pt-2">
-                  Description
-                </Label>
-                <Textarea
-                  id="item-description"
-                  value={newItem.description}
-                  onChange={(e) => setNewItem({...newItem, description: e.target.value})}
-                  className="col-span-3"
-                  rows={5}
-                />
-              </div>
-            </div>
-            
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleAddItem} className="bg-noor-olive hover:bg-noor-olive-light text-white">Add Item</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        {renderAddItemDialog()}
       </div>
       
       <Tabs defaultValue="benefit" value={activeTab} onValueChange={handleTabChange}>
@@ -239,7 +327,10 @@ const AdminContent = () => {
                             variant="ghost" 
                             size="sm" 
                             className="h-8 w-8 p-0" 
-                            onClick={() => setEditingItem(item)}
+                            onClick={() => {
+                              setEditingItem(item);
+                              setEditImagePreview(item.imageUrl || null);
+                            }}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -295,7 +386,12 @@ const AdminContent = () => {
       
       {/* Edit Dialog */}
       {editingItem && (
-        <Dialog open={!!editingItem} onOpenChange={(open) => !open && setEditingItem(null)}>
+        <Dialog open={!!editingItem} onOpenChange={(open) => {
+          if (!open) {
+            setEditingItem(null);
+            setEditImagePreview(null);
+          }
+        }}>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle>Edit {editingItem.type.charAt(0).toUpperCase() + editingItem.type.slice(1)}</DialogTitle>
@@ -316,17 +412,38 @@ const AdminContent = () => {
                   className="col-span-3"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-image" className="text-right">
-                  Image URL
+              <div className="grid grid-cols-4 items-start gap-4">
+                <Label htmlFor="edit-image" className="text-right pt-2">
+                  Image
                 </Label>
-                <Input
-                  id="edit-image"
-                  value={editingItem.imageUrl}
-                  onChange={(e) => setEditingItem({...editingItem, imageUrl: e.target.value})}
-                  className="col-span-3"
-                  placeholder="https://example.com/image.jpg"
-                />
+                <div className="col-span-3">
+                  <input 
+                    type="file" 
+                    ref={editFileInputRef}
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, true)}
+                    className="hidden"
+                  />
+                  <div className="flex flex-col gap-2">
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => editFileInputRef.current?.click()}
+                      className="flex items-center gap-2 w-full"
+                    >
+                      <Upload size={16} /> Change Image
+                    </Button>
+                    {editImagePreview && (
+                      <div className="mt-2 relative w-full h-32 rounded-md overflow-hidden border border-border">
+                        <img 
+                          src={editImagePreview} 
+                          alt="Preview" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="grid grid-cols-4 items-start gap-4">
                 <Label htmlFor="edit-description" className="text-right pt-2">
@@ -343,7 +460,12 @@ const AdminContent = () => {
             </div>
             
             <DialogFooter>
-              <Button variant="outline" onClick={() => setEditingItem(null)}>Cancel</Button>
+              <Button variant="outline" onClick={() => {
+                setEditingItem(null);
+                setEditImagePreview(null);
+              }}>
+                Cancel
+              </Button>
               <Button onClick={handleUpdateItem} className="bg-noor-olive hover:bg-noor-olive-light text-white">
                 Save Changes
               </Button>
