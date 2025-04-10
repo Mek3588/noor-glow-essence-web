@@ -1,6 +1,8 @@
 
 import React from 'react';
 import RevealOnScroll from './RevealOnScroll';
+import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 const CtaSection = () => {
   return (
@@ -12,9 +14,12 @@ const CtaSection = () => {
             <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto">
               Transform your hair with Noor Naturals Hair Essence Oil and give your hair the care it deserves.
             </p>
-            <button className="bg-white text-noor-olive hover:bg-noor-yellow hover:text-noor-brown px-8 py-3 rounded-md transition-colors hover-scale text-lg font-medium">
-              Shop Now
-            </button>
+            <Button 
+              className="bg-white text-noor-olive hover:bg-noor-yellow hover:text-noor-brown px-8 py-3 rounded-md transition-colors hover-scale text-lg font-medium"
+              asChild
+            >
+              <Link to="/contact">Contact Us</Link>
+            </Button>
           </div>
         </RevealOnScroll>
       </div>

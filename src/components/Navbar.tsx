@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,11 +24,11 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', href: '#hero' },
-    { name: 'Ingredients', href: '#ingredients' },
-    { name: 'How to Use', href: '#how-to-use' },
-    { name: 'Benefits', href: '#benefits' },
-    { name: 'Why Us', href: '#why-us' },
+    { name: 'Home', href: '/#hero' },
+    { name: 'Ingredients', href: '/#ingredients' },
+    { name: 'How to Use', href: '/#how-to-use' },
+    { name: 'Benefits', href: '/#benefits' },
+    { name: 'Why Us', href: '/#why-us' },
   ];
 
   return (
@@ -42,9 +43,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
-            <a href="#hero" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <span className="text-xl font-bold text-noor-brown">NOOR NATURALS</span>
-            </a>
+            </Link>
           </div>
           
           {/* Desktop menu */}
@@ -59,12 +60,12 @@ const Navbar = () => {
                   {item.name}
                 </a>
               ))}
-              <a
-                href="#contact"
+              <Link
+                to="/contact"
                 className="bg-noor-olive text-white px-4 py-2 rounded-md hover:bg-noor-olive-light transition-colors"
               >
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
           
@@ -97,13 +98,13 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="block py-2 mt-4 bg-noor-olive text-white px-4 rounded-md hover:bg-noor-olive-light text-center"
               onClick={() => setIsOpen(false)}
             >
               Contact
-            </a>
+            </Link>
           </div>
         </div>
       </div>

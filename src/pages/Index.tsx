@@ -34,9 +34,12 @@ const Index = () => {
       
       parallaxElements.forEach((element) => {
         const scrollPosition = window.pageYOffset;
-        const speed = element.getAttribute('data-speed') || 0.5;
+        const speed = element.getAttribute('data-speed') || '0.5';
+        const speedValue = parseFloat(speed);
         
-        element.style.transform = `translateY(${scrollPosition * speed}px)`;
+        if (element instanceof HTMLElement) {
+          element.style.transform = `translateY(${scrollPosition * speedValue}px)`;
+        }
       });
     };
     

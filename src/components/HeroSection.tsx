@@ -3,6 +3,7 @@ import React from 'react';
 import { ChevronDown, Leaf } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -47,15 +48,11 @@ const HeroSection = () => {
         <RevealOnScroll delay={600}>
           <div className="flex flex-col md:flex-row gap-4 mt-8">
             <Button 
-              className="bg-noor-olive hover:bg-noor-olive-light text-white px-8 py-6 rounded-md transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              Buy Now
-            </Button>
-            <Button 
               variant="outline"
               className="border-2 border-noor-olive text-noor-olive hover:bg-noor-olive hover:text-white px-8 py-6 rounded-md transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              asChild
             >
-              Learn More
+              <Link to="/contact">Contact Us</Link>
             </Button>
           </div>
         </RevealOnScroll>
