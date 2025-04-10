@@ -1,12 +1,57 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import HeroSection from '@/components/HeroSection';
+import IngredientsSection from '@/components/IngredientsSection';
+import HowToUseSection from '@/components/HowToUseSection';
+import BenefitsSection from '@/components/BenefitsSection';
+import WhyChooseUsSection from '@/components/WhyChooseUsSection';
+import CtaSection from '@/components/CtaSection';
+import Footer from '@/components/Footer';
+import LeafDecorations from '@/components/LeafDecorations';
+import FloatingButton from '@/components/FloatingButton';
 
 const Index = () => {
+  useEffect(() => {
+    // Function to handle reveal animations on scroll
+    const handleRevealElements = () => {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      reveals.forEach((element) => {
+        const windowHeight = window.innerHeight;
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active');
+        }
+      });
+    };
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', handleRevealElements);
+    
+    // Call once to check for elements in view on load
+    handleRevealElements();
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', handleRevealElements);
+    };
+  }, []);
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen overflow-x-hidden">
+      <LeafDecorations />
+      <Navbar />
+      <HeroSection />
+      <IngredientsSection />
+      <HowToUseSection />
+      <BenefitsSection />
+      <WhyChooseUsSection />
+      <CtaSection />
+      <Footer />
+      <FloatingButton />
     </div>
   );
 };
