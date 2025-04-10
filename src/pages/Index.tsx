@@ -28,8 +28,21 @@ const Index = () => {
       });
     };
     
-    // Add scroll event listener
+    // Add parallax effect to elements with the parallax class
+    const handleParallax = () => {
+      const parallaxElements = document.querySelectorAll('.parallax');
+      
+      parallaxElements.forEach((element) => {
+        const scrollPosition = window.pageYOffset;
+        const speed = element.getAttribute('data-speed') || 0.5;
+        
+        element.style.transform = `translateY(${scrollPosition * speed}px)`;
+      });
+    };
+    
+    // Add scroll event listeners
     window.addEventListener('scroll', handleRevealElements);
+    window.addEventListener('scroll', handleParallax);
     
     // Call once to check for elements in view on load
     handleRevealElements();
@@ -37,6 +50,7 @@ const Index = () => {
     // Cleanup
     return () => {
       window.removeEventListener('scroll', handleRevealElements);
+      window.removeEventListener('scroll', handleParallax);
     };
   }, []);
   
