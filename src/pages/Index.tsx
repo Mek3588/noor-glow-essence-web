@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
@@ -10,10 +9,10 @@ import CtaSection from '@/components/CtaSection';
 import Footer from '@/components/Footer';
 import LeafDecorations from '@/components/LeafDecorations';
 import FloatingButton from '@/components/FloatingButton';
+import HiddenAdminButton from '@/components/HiddenAdminButton';
 
 const Index = () => {
   useEffect(() => {
-    // Function to handle reveal animations on scroll
     const handleRevealElements = () => {
       const reveals = document.querySelectorAll('.reveal');
       
@@ -28,7 +27,6 @@ const Index = () => {
       });
     };
     
-    // Add parallax effect to elements with the parallax class
     const handleParallax = () => {
       const parallaxElements = document.querySelectorAll('.parallax');
       
@@ -43,14 +41,11 @@ const Index = () => {
       });
     };
     
-    // Add scroll event listeners
     window.addEventListener('scroll', handleRevealElements);
     window.addEventListener('scroll', handleParallax);
     
-    // Call once to check for elements in view on load
     handleRevealElements();
     
-    // Cleanup
     return () => {
       window.removeEventListener('scroll', handleRevealElements);
       window.removeEventListener('scroll', handleParallax);
@@ -58,7 +53,7 @@ const Index = () => {
   }, []);
   
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <>
       <LeafDecorations />
       <Navbar />
       <HeroSection />
@@ -69,7 +64,8 @@ const Index = () => {
       <CtaSection />
       <Footer />
       <FloatingButton />
-    </div>
+      <HiddenAdminButton />
+    </>
   );
 };
 

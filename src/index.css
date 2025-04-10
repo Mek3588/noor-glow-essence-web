@@ -79,6 +79,23 @@
   .leaf-decoration {
     @apply absolute opacity-10 -z-10;
   }
+
+  /* Admin UI components */
+  .admin-card {
+    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg border border-border;
+  }
+  
+  .admin-input {
+    @apply border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-noor-olive;
+  }
+  
+  .admin-button-primary {
+    @apply bg-noor-olive text-white px-4 py-2 rounded-md hover:bg-noor-olive-light transition-colors;
+  }
+  
+  .admin-button-secondary {
+    @apply bg-white text-noor-brown border border-noor-brown/20 px-4 py-2 rounded-md hover:bg-noor-brown/10 transition-colors;
+  }
 }
 
 .reveal {
@@ -90,4 +107,33 @@
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Admin animations */
+@keyframes slideFromRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-from-right {
+  animation: slideFromRight 0.3s forwards;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
 }
