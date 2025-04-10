@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Clock, Droplets, Shower, Calendar, AlertTriangle } from 'lucide-react';
+import { Clock, Droplets, Bath, Calendar, AlertTriangle } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 
 interface StepProps {
@@ -42,7 +42,7 @@ const HowToUseSection = () => {
       description: "Leave on for at least 30 minutes, or overnight for deeper conditioning."
     },
     {
-      icon: <Shower className="text-noor-olive" size={32} />,
+      icon: <Bath className="text-noor-olive" size={32} />,
       title: "Wash",
       description: "Wash thoroughly with shampoo. Use 2-3 times per week for best results."
     }
