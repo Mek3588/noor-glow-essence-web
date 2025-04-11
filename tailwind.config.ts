@@ -64,11 +64,11 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				noor: {
-					yellow: '#FEF751',
-					"yellow-light": '#FEF9CD',
-					olive: '#8A8B39',
-					"olive-light": '#B9BA63',
-					brown: '#7D5A47',
+					yellow: 'var(--noor-yellow)',
+					"yellow-light": 'var(--noor-yellow-light)',
+					olive: 'var(--noor-olive)',
+					"olive-light": 'var(--noor-olive-light)',
+					brown: 'var(--noor-brown)',
 				}
 			},
 			borderRadius: {
@@ -154,6 +154,22 @@ export default {
 					'100%': {
 						backgroundPosition: '200% 0'
 					}
+				},
+				'bounce': {
+					'0%, 100%': {
+						transform: 'translateY(0)'
+					},
+					'50%': {
+						transform: 'translateY(-25px)'
+					}
+				},
+				'spin-slow': {
+					'0%': {
+						transform: 'rotate(0deg)'
+					},
+					'100%': {
+						transform: 'rotate(360deg)'
+					}
 				}
 			},
 			animation: {
@@ -166,7 +182,9 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'sway': 'sway 8s ease-in-out infinite',
 				'pulse': 'pulse 3s ease-in-out infinite',
-				'shimmer': 'shimmer 2s linear infinite'
+				'shimmer': 'shimmer 2s linear infinite',
+				'bounce': 'bounce 5s ease-in-out infinite',
+				'spin-slow': 'spin-slow 20s linear infinite'
 			},
 			backgroundImage: {
 				'gradient-yellow': 'linear-gradient(184.1deg, rgba(249,255,182,1) 44.7%, rgba(226,255,172,1) 67.2%)',

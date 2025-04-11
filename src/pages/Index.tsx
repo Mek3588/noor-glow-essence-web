@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
@@ -10,6 +11,7 @@ import Footer from '@/components/Footer';
 import LeafDecorations from '@/components/LeafDecorations';
 import FloatingButton from '@/components/FloatingButton';
 import HiddenAdminButton from '@/components/HiddenAdminButton';
+import { AnimatedCursor } from '@/components/AnimatedCursor';
 
 const Index = () => {
   useEffect(() => {
@@ -41,19 +43,44 @@ const Index = () => {
       });
     };
     
-    window.addEventListener('scroll', handleRevealElements);
-    window.addEventListener('scroll', handleParallax);
+    const handleScroll = () => {
+      handleRevealElements();
+      handleParallax();
+      
+      // Add smooth fade to navigation on scroll
+      const navbar = document.querySelector('nav');
+      if (navbar) {
+        if (window.scrollY > 50) {
+          navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-md');
+          navbar.classList.remove('bg-transparent');
+        } else {
+          navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md');
+          navbar.classList.add('bg-transparent');
+        }
+      }
+    };
     
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initialize animations on load
     handleRevealElements();
     
+    // Add animated classes to elements with .slide-in class
+    const slideElements = document.querySelectorAll('.slide-in');
+    slideElements.forEach((element, index) => {
+      setTimeout(() => {
+        element.classList.add('active');
+      }, 200 * index);
+    });
+    
     return () => {
-      window.removeEventListener('scroll', handleRevealElements);
-      window.removeEventListener('scroll', handleParallax);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
   
   return (
     <>
+      <AnimatedCursor />
       <LeafDecorations />
       <Navbar />
       <HeroSection />

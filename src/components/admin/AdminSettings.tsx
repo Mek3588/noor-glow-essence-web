@@ -35,14 +35,19 @@ const AdminSettings = () => {
   const saveColorChanges = () => {
     updateColorScheme(colors);
     
-    // Apply colors to CSS variables
+    // Apply CSS custom properties directly to the document root element
     document.documentElement.style.setProperty('--color-primary', colors.primary);
     document.documentElement.style.setProperty('--color-secondary', colors.secondary);
     document.documentElement.style.setProperty('--color-accent', colors.accent);
     
+    // Also update the noor- prefixed colors in Tailwind
+    document.documentElement.style.setProperty('--noor-yellow', colors.primary);
+    document.documentElement.style.setProperty('--noor-brown', colors.secondary);
+    document.documentElement.style.setProperty('--noor-olive', colors.accent);
+    
     toast({
       title: "Colors updated",
-      description: "Your color scheme changes have been saved.",
+      description: "Your color scheme changes have been saved and applied.",
     });
   };
 
@@ -55,6 +60,16 @@ const AdminSettings = () => {
     
     setColors(defaultColors);
     updateColorScheme(defaultColors);
+    
+    // Reset CSS properties
+    document.documentElement.style.setProperty('--color-primary', defaultColors.primary);
+    document.documentElement.style.setProperty('--color-secondary', defaultColors.secondary);
+    document.documentElement.style.setProperty('--color-accent', defaultColors.accent);
+    
+    // Reset Tailwind colors
+    document.documentElement.style.setProperty('--noor-yellow', defaultColors.primary);
+    document.documentElement.style.setProperty('--noor-brown', defaultColors.secondary);
+    document.documentElement.style.setProperty('--noor-olive', defaultColors.accent);
     
     toast({
       title: "Colors reset",

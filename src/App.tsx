@@ -21,14 +21,25 @@ const App = () => {
     const savedColors = localStorage.getItem('adminColorScheme');
     if (savedColors) {
       const colors = JSON.parse(savedColors);
+      // Set CSS custom properties
       document.documentElement.style.setProperty('--color-primary', colors.primary);
       document.documentElement.style.setProperty('--color-secondary', colors.secondary);
       document.documentElement.style.setProperty('--color-accent', colors.accent);
+      
+      // Update Tailwind noor-prefixed colors
+      document.documentElement.style.setProperty('--noor-yellow', colors.primary);
+      document.documentElement.style.setProperty('--noor-brown', colors.secondary);
+      document.documentElement.style.setProperty('--noor-olive', colors.accent);
     } else {
       // Set default colors
       document.documentElement.style.setProperty('--color-primary', '#FEF751');
       document.documentElement.style.setProperty('--color-secondary', '#7D5A47');
       document.documentElement.style.setProperty('--color-accent', '#8A8B39');
+      
+      // Set Tailwind noor-prefixed colors
+      document.documentElement.style.setProperty('--noor-yellow', '#FEF751');
+      document.documentElement.style.setProperty('--noor-brown', '#7D5A47');
+      document.documentElement.style.setProperty('--noor-olive', '#8A8B39');
     }
   }, []);
 
