@@ -14,19 +14,19 @@ const WhyChooseUsSection = () => {
     {
       id: 'default-1',
       title: 'Sarah M.',
-      description: 'I've been using the hair oil for 3 months and my hair has never been healthier. My hair growth has increased and it's so much shinier now!',
+      description: "I've been using the hair oil for 3 months and my hair has never been healthier. My hair growth has increased and it's so much shinier now!",
       imageUrl: ''
     },
     {
       id: 'default-2',
       title: 'Ahmed K.',
-      description: 'After years of trying different products, I finally found something that works. My hair feels stronger and I've noticed much less breakage.',
+      description: "After years of trying different products, I finally found something that works. My hair feels stronger and I've noticed much less breakage.",
       imageUrl: ''
     },
     {
       id: 'default-3',
       title: 'Maria L.',
-      description: 'The scent is amazing and my hair absorbs it without feeling greasy. I've gotten so many compliments since I started using this oil!',
+      description: "The scent is amazing and my hair absorbs it without feeling greasy. I've gotten so many compliments since I started using this oil!",
       imageUrl: ''
     }
   ];
