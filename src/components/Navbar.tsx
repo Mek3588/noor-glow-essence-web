@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Flag } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
@@ -47,7 +47,11 @@ const Navbar = () => {
               <span className="text-xl font-bold text-noor-brown">NOOR NATURALS</span>
             </Link>
             <div className="ml-4 flex items-center">
-              <Flag className="mr-1 text-blue-600" size={24} />
+              <div className="flex h-6 w-9 mr-2 rounded overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div className="w-1/3 h-full bg-[#0055A4]"></div>
+                <div className="w-1/3 h-full bg-white"></div>
+                <div className="w-1/3 h-full bg-[#EF4135]"></div>
+              </div>
               <span className="font-medium text-noor-brown">Made in France</span>
             </div>
           </div>
@@ -93,7 +97,11 @@ const Navbar = () => {
         >
           <div className="px-4 pt-2 pb-3 space-y-1">
             <div className="py-2 mb-2 flex items-center">
-              <Flag className="mr-1 text-blue-600" size={24} />
+              <div className="flex h-5 w-8 mr-2 rounded overflow-hidden shadow-sm">
+                <div className="w-1/3 h-full bg-[#0055A4]"></div>
+                <div className="w-1/3 h-full bg-white"></div>
+                <div className="w-1/3 h-full bg-[#EF4135]"></div>
+              </div>
               <span className="font-medium text-noor-brown">Made in France</span>
             </div>
             {navItems.map((item) => (

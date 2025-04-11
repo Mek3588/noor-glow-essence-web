@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Mail, Phone, Instagram, Facebook, Twitter, Flag } from 'lucide-react';
+import { Mail, Phone, Instagram, Facebook, Twitter } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -13,7 +13,11 @@ const Footer = () => {
               Premium hair care products made from 100% natural ingredients.
             </p>
             <div className="flex items-center mb-4">
-              <Flag className="mr-2 text-white" size={30} />
+              <div className="flex h-8 w-12 mr-3 rounded overflow-hidden shadow-md animate-float">
+                <div className="w-1/3 h-full bg-[#0055A4]"></div>
+                <div className="w-1/3 h-full bg-white"></div>
+                <div className="w-1/3 h-full bg-[#EF4135]"></div>
+              </div>
               <span className="text-white font-medium text-lg">Made in France</span>
             </div>
             <div className="flex space-x-4">
