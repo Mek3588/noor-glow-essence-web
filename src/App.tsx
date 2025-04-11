@@ -15,8 +15,9 @@ import { useEffect } from "react";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Initialize CSS variables for color scheme on first load
+  // Initialize CSS variables for color scheme and load content on first load
   useEffect(() => {
+    // Load color scheme
     const savedColors = localStorage.getItem('adminColorScheme');
     if (savedColors) {
       const colors = JSON.parse(savedColors);

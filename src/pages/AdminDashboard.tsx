@@ -4,10 +4,9 @@ import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAdmin } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { Settings, Grid3X3, Upload, LogOut, ChevronLeft, PlusCircle } from 'lucide-react';
+import { Settings, Grid3X3, LogOut, ChevronLeft, PlusCircle } from 'lucide-react';
 import AdminSettings from '@/components/admin/AdminSettings';
 import AdminContent from '@/components/admin/AdminContent';
-import AdminUpload from '@/components/admin/AdminUpload';
 
 const AdminDashboard = () => {
   const { isAuthenticated, logout } = useAdmin();
@@ -50,7 +49,6 @@ const AdminDashboard = () => {
 
   const menuItems = [
     { path: '/admin-dashboard', label: 'Content', icon: Grid3X3 },
-    { path: '/admin-dashboard/upload', label: 'Upload', icon: Upload },
     { path: '/admin-dashboard/settings', label: 'Settings', icon: Settings },
   ];
 
@@ -145,7 +143,6 @@ const AdminDashboard = () => {
         <main className={`flex-1 overflow-y-auto bg-gray-50 ${isMobile ? 'pt-16' : ''}`}>
           <Routes>
             <Route path="/" element={<AdminContent />} />
-            <Route path="/upload" element={<AdminUpload />} />
             <Route path="/settings" element={<AdminSettings />} />
           </Routes>
         </main>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Flag } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
 
 const HiddenAdminButton = () => {
@@ -17,14 +17,14 @@ const HiddenAdminButton = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 flex items-center space-x-2 opacity-40 hover:opacity-100 transition-opacity duration-300">
-      <div className="flex items-center mr-2">
-        <Flag size={14} className="text-blue-600 mr-1" />
-        <div className="flex flex-col">
-          <div className="w-6 h-1.5 bg-blue-600"></div>
-          <div className="w-6 h-1.5 bg-white"></div>
-          <div className="w-6 h-1.5 bg-red-600"></div>
+    <div className="fixed bottom-4 right-4 flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity duration-300">
+      <div className="flex items-center bg-white py-1 px-2 rounded-md shadow-sm">
+        <div className="flex flex-col mr-2">
+          <div className="w-8 h-2 bg-blue-600"></div>
+          <div className="w-8 h-2 bg-white"></div>
+          <div className="w-8 h-2 bg-red-600"></div>
         </div>
+        <span className="text-sm font-medium text-gray-700">Made in France</span>
       </div>
       
       <button

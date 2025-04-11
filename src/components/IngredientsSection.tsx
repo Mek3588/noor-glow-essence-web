@@ -1,75 +1,85 @@
 
 import React from 'react';
-import { Leaf, Droplet } from 'lucide-react';
+import { useAdmin } from '@/contexts/AdminContext';
+import { Sparkles } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import RevealOnScroll from './RevealOnScroll';
 
-interface IngredientProps {
-  name: string;
-  scientific: string;
-  delay: number;
-}
-
-const Ingredient = ({ name, scientific, delay }: IngredientProps) => {
-  return (
-    <RevealOnScroll delay={delay} className="mb-6">
-      <div className="flex items-start space-x-4 group">
-        <div className="p-2 bg-noor-yellow-light rounded-full mt-1 group-hover:bg-noor-yellow transition-colors">
-          <Droplet className="text-noor-olive" size={20} />
-        </div>
-        <div>
-          <h3 className="font-semibold text-lg text-noor-brown">{name}</h3>
-          <p className="text-noor-olive italic">{scientific}</p>
-        </div>
-      </div>
-    </RevealOnScroll>
-  );
-};
-
 const IngredientsSection = () => {
-  const ingredients = [
-    { name: 'Coconut Oil', scientific: 'Cocos Nucifera' },
-    { name: 'Olive Fruit Oil', scientific: 'Olea Europaea' },
-    { name: 'Castor Seed Oil', scientific: 'Ricinus Communis' },
-    { name: 'Peppermint Oil', scientific: 'Mentha Piperita' },
-    { name: 'Rosemary Leaf Oil', scientific: 'Rosmarinus Officinalis' },
+  const { contentItems } = useAdmin();
+  const ingredientItems = contentItems.filter(item => item.type === 'ingredient');
+  
+  // Fallback ingredients in case there are none in the admin panel
+  const defaultIngredients = [
+    {
+      id: 'default-1',
+      title: 'Argan Oil',
+      description: 'Rich in vitamins and antioxidants, argan oil helps to nourish your hair and protect it from damage.',
+      imageUrl: '/lovable-uploads/b49771c0-c998-442e-a1a9-6cabc432cb90.png'
+    },
+    {
+      id: 'default-2',
+      title: 'Coconut Oil',
+      description: 'Known for its moisturizing properties, coconut oil helps to prevent protein loss and keep your hair strong.',
+      imageUrl: '/lovable-uploads/b49771c0-c998-442e-a1a9-6cabc432cb90.png'
+    },
+    {
+      id: 'default-3',
+      title: 'Jojoba Oil',
+      description: 'Similar to the natural oils in your scalp, jojoba oil helps to balance oil production and promote healthy hair.',
+      imageUrl: '/lovable-uploads/b49771c0-c998-442e-a1a9-6cabc432cb90.png'
+    }
   ];
 
+  // Display admin ingredients if available, otherwise show defaults
+  const displayIngredients = ingredientItems.length > 0 ? ingredientItems : defaultIngredients;
+  
   return (
-    <section id="ingredients" className="bg-white">
+    <section id="ingredients" className="bg-noor-yellow/10 relative">
       <div className="section-container">
         <RevealOnScroll>
-          <h2 className="section-title text-left">Ingredients</h2>
+          <h2 className="section-title text-center mx-auto after:left-1/2 after:-translate-x-1/2">
+            Key Ingredients
+          </h2>
+          <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12">
+            Our hair oil is crafted with the finest natural ingredients, carefully selected for their hair-nourishing properties.
+          </p>
         </RevealOnScroll>
         
-        <div className="mt-10 grid md:grid-cols-2 gap-x-12 gap-y-8">
-          <RevealOnScroll delay={200}>
-            <div className="bg-gradient-to-b from-noor-yellow-light to-transparent p-6 rounded-xl mb-6 md:mb-0">
-              <div className="flex items-center mb-4">
-                <Leaf className="text-noor-olive mr-2" size={24} />
-                <h3 className="font-bold text-xl">100% Natural Oils</h3>
-              </div>
-              <p className="text-noor-brown mb-4">
-                Our Hair Essence Oil is formulated with premium natural oils, 
-                carefully selected to promote hair growth and nourish your hair 
-                from roots to tips.
-              </p>
-              <p className="text-noor-brown">
-                Each ingredient serves a specific purpose in improving hair health, 
-                thickness, and shine.
-              </p>
-            </div>
-          </RevealOnScroll>
-          
-          <div className="space-y-2">
-            {ingredients.map((ingredient, index) => (
-              <Ingredient 
-                key={ingredient.name}
-                name={ingredient.name}
-                scientific={ingredient.scientific}
-                delay={300 + index * 100}
-              />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          {displayIngredients.map((ingredient, index) => (
+            <RevealOnScroll key={ingredient.id} delay={index * 100}>
+              <Card className="border-none shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden bg-white hover:scale-105 transform transition-transform duration-300">
+                <div className="relative h-48 overflow-hidden bg-noor-yellow/20">
+                  {ingredient.imageUrl ? (
+                    <img 
+                      src={ingredient.imageUrl} 
+                      alt={ingredient.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/lovable-uploads/b49771c0-c998-442e-a1a9-6cabc432cb90.png';
+                      }}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <Sparkles className="w-12 h-12 text-noor-olive" />
+                    </div>
+                  )}
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-xl font-semibold text-noor-brown">
+                    {ingredient.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-600">
+                    {ingredient.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </RevealOnScroll>
+          ))}
         </div>
       </div>
     </section>
