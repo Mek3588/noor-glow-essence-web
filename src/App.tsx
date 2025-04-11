@@ -33,8 +33,8 @@ const App = () => {
         document.documentElement.style.setProperty('--noor-olive', colors.accent);
         
         // Add derived color variants
-        document.documentElement.style.setProperty('--noor-yellow-light', adjustColorLightness(colors.primary, 20));
-        document.documentElement.style.setProperty('--noor-olive-light', adjustColorLightness(colors.accent, 20));
+        document.documentElement.style.setProperty('--noor-yellow-light', adjustColorLightness(colors.primary, 30));
+        document.documentElement.style.setProperty('--noor-olive-light', adjustColorLightness(colors.accent, 30));
       } catch (error) {
         console.error("Error parsing color scheme:", error);
         setDefaultColors();
@@ -65,10 +65,10 @@ const App = () => {
     let g = parseInt(hex.substring(3, 5), 16);
     let b = parseInt(hex.substring(5, 7), 16);
     
-    // Adjust lightness
-    r = Math.min(255, r + Math.round(r * percent / 100));
-    g = Math.min(255, g + Math.round(g * percent / 100));
-    b = Math.min(255, b + Math.round(b * percent / 100));
+    // Adjust lightness (making it lighter)
+    r = Math.min(255, r + Math.round((255 - r) * percent / 100));
+    g = Math.min(255, g + Math.round((255 - g) * percent / 100));
+    b = Math.min(255, b + Math.round((255 - b) * percent / 100));
     
     // Convert back to hex
     return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
