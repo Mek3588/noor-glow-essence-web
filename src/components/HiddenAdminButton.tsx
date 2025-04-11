@@ -18,15 +18,6 @@ const HiddenAdminButton = () => {
 
   return (
     <div className="fixed bottom-4 right-4 flex items-center space-x-2 opacity-80 hover:opacity-100 transition-opacity duration-300">
-      <div className="flex items-center bg-white py-1 px-2 rounded-md shadow-sm">
-        <div className="flex flex-col mr-2">
-          <div className="w-8 h-2 bg-blue-600"></div>
-          <div className="w-8 h-2 bg-white"></div>
-          <div className="w-8 h-2 bg-red-600"></div>
-        </div>
-        <span className="text-sm font-medium text-gray-700">Made in France</span>
-      </div>
-      
       <button
         onClick={toggleButtonVisibility}
         className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700"

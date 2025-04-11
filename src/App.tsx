@@ -20,28 +20,59 @@ const App = () => {
     // Load color scheme
     const savedColors = localStorage.getItem('adminColorScheme');
     if (savedColors) {
-      const colors = JSON.parse(savedColors);
-      // Set CSS custom properties
-      document.documentElement.style.setProperty('--color-primary', colors.primary);
-      document.documentElement.style.setProperty('--color-secondary', colors.secondary);
-      document.documentElement.style.setProperty('--color-accent', colors.accent);
-      
-      // Update Tailwind noor-prefixed colors
-      document.documentElement.style.setProperty('--noor-yellow', colors.primary);
-      document.documentElement.style.setProperty('--noor-brown', colors.secondary);
-      document.documentElement.style.setProperty('--noor-olive', colors.accent);
+      try {
+        const colors = JSON.parse(savedColors);
+        // Set CSS custom properties
+        document.documentElement.style.setProperty('--color-primary', colors.primary);
+        document.documentElement.style.setProperty('--color-secondary', colors.secondary);
+        document.documentElement.style.setProperty('--color-accent', colors.accent);
+        
+        // Update Tailwind noor-prefixed colors
+        document.documentElement.style.setProperty('--noor-yellow', colors.primary);
+        document.documentElement.style.setProperty('--noor-brown', colors.secondary);
+        document.documentElement.style.setProperty('--noor-olive', colors.accent);
+        
+        // Add derived color variants
+        document.documentElement.style.setProperty('--noor-yellow-light', adjustColorLightness(colors.primary, 20));
+        document.documentElement.style.setProperty('--noor-olive-light', adjustColorLightness(colors.accent, 20));
+      } catch (error) {
+        console.error("Error parsing color scheme:", error);
+        setDefaultColors();
+      }
     } else {
-      // Set default colors
-      document.documentElement.style.setProperty('--color-primary', '#FEF751');
-      document.documentElement.style.setProperty('--color-secondary', '#7D5A47');
-      document.documentElement.style.setProperty('--color-accent', '#8A8B39');
-      
-      // Set Tailwind noor-prefixed colors
-      document.documentElement.style.setProperty('--noor-yellow', '#FEF751');
-      document.documentElement.style.setProperty('--noor-brown', '#7D5A47');
-      document.documentElement.style.setProperty('--noor-olive', '#8A8B39');
+      setDefaultColors();
     }
   }, []);
+  
+  const setDefaultColors = () => {
+    // Set default colors
+    document.documentElement.style.setProperty('--color-primary', '#FEF751');
+    document.documentElement.style.setProperty('--color-secondary', '#7D5A47');
+    document.documentElement.style.setProperty('--color-accent', '#8A8B39');
+    
+    // Set Tailwind noor-prefixed colors
+    document.documentElement.style.setProperty('--noor-yellow', '#FEF751');
+    document.documentElement.style.setProperty('--noor-yellow-light', '#FFF9A8');
+    document.documentElement.style.setProperty('--noor-brown', '#7D5A47');
+    document.documentElement.style.setProperty('--noor-olive', '#8A8B39');
+    document.documentElement.style.setProperty('--noor-olive-light', '#A5A654');
+  };
+  
+  // Helper function to adjust color lightness
+  const adjustColorLightness = (hex: string, percent: number) => {
+    // Convert hex to RGB
+    let r = parseInt(hex.substring(1, 3), 16);
+    let g = parseInt(hex.substring(3, 5), 16);
+    let b = parseInt(hex.substring(5, 7), 16);
+    
+    // Adjust lightness
+    r = Math.min(255, r + Math.round(r * percent / 100));
+    g = Math.min(255, g + Math.round(g * percent / 100));
+    b = Math.min(255, b + Math.round(b * percent / 100));
+    
+    // Convert back to hex
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
 
   return (
     <QueryClientProvider client={queryClient}>

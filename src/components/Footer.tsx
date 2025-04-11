@@ -13,8 +13,8 @@ const Footer = () => {
               Premium hair care products made from 100% natural ingredients.
             </p>
             <div className="flex items-center mb-4">
-              <Flag className="mr-2 text-white" size={20} />
-              <span className="text-white font-medium">Made in Germany</span>
+              <Flag className="mr-2 text-white" size={30} />
+              <span className="text-white font-medium text-lg">Made in France</span>
             </div>
             <div className="flex space-x-4">
               <a href="#" className="text-white/80 hover:text-white transition-colors">

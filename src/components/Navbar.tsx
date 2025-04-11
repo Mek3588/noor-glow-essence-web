@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Flag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
@@ -42,10 +42,14 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center">
               <span className="text-xl font-bold text-noor-brown">NOOR NATURALS</span>
             </Link>
+            <div className="ml-4 flex items-center">
+              <Flag className="mr-1 text-blue-600" size={24} />
+              <span className="font-medium text-noor-brown">Made in France</span>
+            </div>
           </div>
           
           {/* Desktop menu */}
@@ -88,6 +92,10 @@ const Navbar = () => {
           )}
         >
           <div className="px-4 pt-2 pb-3 space-y-1">
+            <div className="py-2 mb-2 flex items-center">
+              <Flag className="mr-1 text-blue-600" size={24} />
+              <span className="font-medium text-noor-brown">Made in France</span>
+            </div>
             {navItems.map((item) => (
               <a
                 key={item.name}
