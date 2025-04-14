@@ -88,8 +88,8 @@ const Index = () => {
       <LeafDecorations />
       <Navbar />
       <HeroSection />
-      <IngredientsSection />
       <ProductShowcase />
+      <IngredientsSection />
       <HowToUseSection />
       <BenefitsSection />
       <WhyChooseUsSection />
