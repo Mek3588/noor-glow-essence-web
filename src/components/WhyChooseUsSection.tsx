@@ -4,9 +4,10 @@ import { useAdmin } from '@/contexts/AdminContext';
 import { CheckCircle, Star } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import RevealOnScroll from './RevealOnScroll';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const WhyChooseUsSection = () => {
-  const { contentItems } = useAdmin();
+  const { contentItems, isLoading } = useAdmin();
   const testimonialItems = contentItems.filter(item => item.type === 'testimonial');
   
   // Fallback testimonials in case there are none in the admin panel
@@ -86,42 +87,66 @@ const WhyChooseUsSection = () => {
         </RevealOnScroll>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {displayTestimonials.map((testimonial, index) => (
-            <RevealOnScroll key={testimonial.id} delay={index * 100}>
-              <Card className="border-none shadow-md hover:shadow-xl transition-shadow duration-300 bg-white overflow-hidden hover:scale-105 transform transition-transform duration-300">
+          {isLoading ? (
+            // Skeleton loaders when loading
+            Array(3).fill(0).map((_, index) => (
+              <Card key={`skeleton-${index}`} className="border-none shadow-md">
                 <CardHeader className="pb-2 flex flex-col items-center">
-                  <div className="flex justify-center mb-4">
-                    {testimonial.imageUrl ? (
-                      <img 
-                        src={testimonial.imageUrl} 
-                        alt={testimonial.title}
-                        className="w-16 h-16 rounded-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = '/placeholder.svg'; 
-                        }}
-                      />
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-noor-yellow flex items-center justify-center">
-                        <Star className="w-8 h-8 text-noor-brown" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex mb-2">
+                  <Skeleton className="w-16 h-16 rounded-full mb-4" />
+                  <div className="flex mb-2 gap-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current text-yellow-500" />
+                      <Skeleton key={i} className="w-4 h-4 rounded-full" />
                     ))}
                   </div>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-gray-600 italic">{testimonial.description}</p>
+                  <Skeleton className="h-4 w-full mb-2 mx-auto" />
+                  <Skeleton className="h-4 w-5/6 mb-2 mx-auto" />
+                  <Skeleton className="h-4 w-4/6 mx-auto" />
                 </CardContent>
                 <CardFooter className="pt-2 flex justify-center">
-                  <p className="font-semibold text-noor-brown">{testimonial.title}</p>
+                  <Skeleton className="h-5 w-24" />
                 </CardFooter>
               </Card>
-            </RevealOnScroll>
-          ))}
+            ))
+          ) : (
+            displayTestimonials.map((testimonial, index) => (
+              <RevealOnScroll key={testimonial.id} delay={index * 100}>
+                <Card className="border-none shadow-md hover:shadow-xl transition-shadow duration-300 bg-white overflow-hidden hover:scale-105 transform transition-transform duration-300">
+                  <CardHeader className="pb-2 flex flex-col items-center">
+                    <div className="flex justify-center mb-4">
+                      {testimonial.imageUrl ? (
+                        <img 
+                          src={testimonial.imageUrl} 
+                          alt={testimonial.title}
+                          className="w-16 h-16 rounded-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/placeholder.svg'; 
+                          }}
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-noor-yellow flex items-center justify-center">
+                          <Star className="w-8 h-8 text-noor-brown" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-current text-yellow-500" />
+                      ))}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <p className="text-gray-600 italic">{testimonial.description}</p>
+                  </CardContent>
+                  <CardFooter className="pt-2 flex justify-center">
+                    <p className="font-semibold text-noor-brown">{testimonial.title}</p>
+                  </CardFooter>
+                </Card>
+              </RevealOnScroll>
+            ))
+          )}
         </div>
       </div>
     </section>

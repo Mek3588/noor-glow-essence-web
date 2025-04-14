@@ -4,9 +4,10 @@ import { useAdmin } from '@/contexts/AdminContext';
 import { Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import RevealOnScroll from './RevealOnScroll';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const IngredientsSection = () => {
-  const { contentItems } = useAdmin();
+  const { contentItems, isLoading } = useAdmin();
   const ingredientItems = contentItems.filter(item => item.type === 'ingredient');
   
   // Fallback ingredients in case there are none in the admin panel
@@ -47,39 +48,56 @@ const IngredientsSection = () => {
         </RevealOnScroll>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          {displayIngredients.map((ingredient, index) => (
-            <RevealOnScroll key={ingredient.id} delay={index * 100}>
-              <Card className="border-none shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden bg-white hover:scale-105 transform transition-transform duration-300">
-                <div className="relative h-48 overflow-hidden bg-noor-yellow/20">
-                  {ingredient.imageUrl ? (
-                    <img 
-                      src={ingredient.imageUrl} 
-                      alt={ingredient.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/lovable-uploads/b49771c0-c998-442e-a1a9-6cabc432cb90.png';
-                      }}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <Sparkles className="w-12 h-12 text-noor-olive" />
-                    </div>
-                  )}
-                </div>
+          {isLoading ? (
+            // Skeleton loaders when loading
+            Array(3).fill(0).map((_, index) => (
+              <Card key={`skeleton-${index}`} className="border-none shadow-md">
+                <div className="h-48 bg-gray-200 animate-pulse"></div>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-xl font-semibold text-noor-brown">
-                    {ingredient.title}
-                  </CardTitle>
+                  <Skeleton className="h-6 w-3/4 mb-2" />
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-gray-600">
-                    {ingredient.description}
-                  </CardDescription>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-5/6 mb-2" />
+                  <Skeleton className="h-4 w-4/6" />
                 </CardContent>
               </Card>
-            </RevealOnScroll>
-          ))}
+            ))
+          ) : (
+            displayIngredients.map((ingredient, index) => (
+              <RevealOnScroll key={ingredient.id} delay={index * 100}>
+                <Card className="border-none shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden bg-white hover:scale-105 transform transition-transform duration-300">
+                  <div className="relative h-48 overflow-hidden bg-noor-yellow/20">
+                    {ingredient.imageUrl ? (
+                      <img 
+                        src={ingredient.imageUrl} 
+                        alt={ingredient.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/lovable-uploads/b49771c0-c998-442e-a1a9-6cabc432cb90.png';
+                        }}
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <Sparkles className="w-12 h-12 text-noor-olive" />
+                      </div>
+                    )}
+                  </div>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-xl font-semibold text-noor-brown">
+                      {ingredient.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-gray-600">
+                      {ingredient.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </RevealOnScroll>
+            ))
+          )}
         </div>
       </div>
     </section>

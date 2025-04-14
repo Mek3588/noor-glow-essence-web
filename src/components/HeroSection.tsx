@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Leaf } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
 import { useAdmin } from '@/contexts/AdminContext';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const HeroSection = () => {
-  const { contentItems } = useAdmin();
+  const { contentItems, isLoading } = useAdmin();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   // Filter product images for the carousel
@@ -25,14 +26,26 @@ const HeroSection = () => {
   
   // Auto-rotate images
   useEffect(() => {
-    if (images.length <= 1) return;
+    if (images.length <= 1 || isLoading) return;
     
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
     }, 3000); // Change image every 3 seconds
     
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [images.length, isLoading]);
+
+  if (isLoading) {
+    return (
+      <section id="hero" className="min-h-screen relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gray-900 opacity-30"></div>
+        <div className="section-container relative z-10 flex flex-col items-center justify-center">
+          <Skeleton className="h-8 w-48 mb-6" />
+          <Skeleton className="h-12 w-64 md:w-96 mb-4" />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="hero" className="min-h-screen relative overflow-hidden">

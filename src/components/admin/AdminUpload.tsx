@@ -4,12 +4,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Upload, Image, FileText, CheckCircle, AlertCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
   const [uploadStatus, setUploadStatus] = useState<{[key: string]: 'pending' | 'success' | 'error'}>({});
+  const [uploadedUrls, setUploadedUrls] = useState<{[key: string]: string}>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -71,15 +73,37 @@ const AdminUpload = () => {
     // Clean up progress and status
     const newProgress = { ...uploadProgress };
     const newStatus = { ...uploadStatus };
+    const newUrls = { ...uploadedUrls };
     
     delete newProgress[fileName];
     delete newStatus[fileName];
+    delete newUrls[fileName];
     
     setUploadProgress(newProgress);
     setUploadStatus(newStatus);
+    setUploadedUrls(newUrls);
   };
 
-  const uploadFiles = () => {
+  const copyImageUrl = (fileName: string) => {
+    if (uploadedUrls[fileName]) {
+      navigator.clipboard.writeText(uploadedUrls[fileName])
+        .then(() => {
+          toast({
+            title: "Copied!",
+            description: "Image URL copied to clipboard",
+          });
+        })
+        .catch(() => {
+          toast({
+            title: "Error",
+            description: "Failed to copy URL",
+            variant: "destructive",
+          });
+        });
+    }
+  };
+
+  const uploadFiles = async () => {
     if (files.length === 0) {
       toast({
         title: "No files selected",
@@ -89,40 +113,58 @@ const AdminUpload = () => {
       return;
     }
 
-    // Simulate file upload with progress for each file
-    files.forEach(file => {
-      let progress = 0;
-      const intervalId = setInterval(() => {
-        progress += Math.floor(Math.random() * 10) + 5;
+    // Upload each file to Supabase storage
+    for (const file of files) {
+      // Skip already uploaded files
+      if (uploadStatus[file.name] === 'success') continue;
+      
+      try {
+        // Update progress to show upload started
+        setUploadProgress(prev => ({ ...prev, [file.name]: 10 }));
         
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(intervalId);
-          
-          // Simulate success/error (90% success rate)
-          const success = Math.random() > 0.1;
-          
-          setUploadStatus(prev => ({
-            ...prev,
-            [file.name]: success ? 'success' : 'error'
-          }));
-          
-          // Show toast for each completed upload
-          toast({
-            title: success ? "Upload complete" : "Upload failed",
-            description: success 
-              ? `${file.name} was uploaded successfully.`
-              : `Failed to upload ${file.name}. Please try again.`,
-            variant: success ? "default" : "destructive",
+        // Create a unique file name to avoid collisions
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
+        const filePath = fileName;
+
+        // Upload to Supabase storage
+        const { error: uploadError, data } = await supabase.storage
+          .from('noor_images')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false
           });
-        }
+
+        if (uploadError) throw uploadError;
+
+        // Simulate progress updates for UI feedback
+        setUploadProgress(prev => ({ ...prev, [file.name]: 60 }));
         
-        setUploadProgress(prev => ({
-          ...prev,
-          [file.name]: progress
-        }));
-      }, 200);
-    });
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('noor_images')
+          .getPublicUrl(filePath);
+          
+        setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
+        setUploadStatus(prev => ({ ...prev, [file.name]: 'success' }));
+        setUploadedUrls(prev => ({ ...prev, [file.name]: urlData.publicUrl }));
+        
+        toast({
+          title: "Upload complete",
+          description: `${file.name} was uploaded successfully.`,
+        });
+      } catch (error) {
+        console.error('Upload error:', error);
+        setUploadStatus(prev => ({ ...prev, [file.name]: 'error' }));
+        setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
+        
+        toast({
+          title: "Upload failed",
+          description: `Failed to upload ${file.name}. Please try again.`,
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   const getFileIcon = (fileName: string) => {
@@ -151,7 +193,7 @@ const AdminUpload = () => {
         <CardHeader>
           <CardTitle>Image Upload</CardTitle>
           <CardDescription>
-            Upload images to use in your content. Supported formats: JPG, PNG, GIF, SVG.
+            Upload images to use in your content. Images will be stored in Supabase and available for use across the site.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -212,6 +254,16 @@ const AdminUpload = () => {
                       </div>
                       <div className="flex items-center">
                         {getStatusIcon(uploadStatus[file.name] || 'pending')}
+                        {uploadStatus[file.name] === 'success' && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyImageUrl(file.name)}
+                            className="h-8 ml-1 text-xs"
+                          >
+                            Copy URL
+                          </Button>
+                        )}
                         <Button 
                           variant="ghost" 
                           size="sm"
@@ -251,6 +303,12 @@ const AdminUpload = () => {
                     <div className="text-xs text-right mt-1">
                       {uploadProgress[file.name] || 0}%
                     </div>
+                    
+                    {uploadStatus[file.name] === 'success' && uploadedUrls[file.name] && (
+                      <div className="mt-2 p-2 bg-gray-100 rounded-md text-xs overflow-hidden">
+                        <code className="break-all block">{uploadedUrls[file.name]}</code>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
