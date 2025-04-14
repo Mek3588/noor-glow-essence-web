@@ -83,7 +83,7 @@ const Index = () => {
   }, []);
   
   return (
-    <div className="scroll-smooth">
+    <div className="scroll-smooth overflow-x-hidden">
       <AnimatedCursor />
       <LeafDecorations />
       <Navbar />
