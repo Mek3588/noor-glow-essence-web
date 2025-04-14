@@ -14,7 +14,7 @@ type ContentItem = {
   description: string;
   imageFile?: File | null;
   imageUrl: string;
-  type: 'benefit' | 'ingredient' | 'testimonial';
+  type: 'benefit' | 'ingredient' | 'testimonial' | 'product';
 };
 
 type AdminContextType = {

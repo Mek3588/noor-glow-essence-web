@@ -6,6 +6,7 @@ import IngredientsSection from '@/components/IngredientsSection';
 import HowToUseSection from '@/components/HowToUseSection';
 import BenefitsSection from '@/components/BenefitsSection';
 import WhyChooseUsSection from '@/components/WhyChooseUsSection';
+import ProductShowcase from '@/components/ProductShowcase';
 import CtaSection from '@/components/CtaSection';
 import Footer from '@/components/Footer';
 import LeafDecorations from '@/components/LeafDecorations';
@@ -15,6 +16,9 @@ import { AnimatedCursor } from '@/components/AnimatedCursor';
 
 const Index = () => {
   useEffect(() => {
+    // Smooth scroll behavior
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
     const handleRevealElements = () => {
       const reveals = document.querySelectorAll('.reveal');
       
@@ -79,12 +83,13 @@ const Index = () => {
   }, []);
   
   return (
-    <>
+    <div className="scroll-smooth">
       <AnimatedCursor />
       <LeafDecorations />
       <Navbar />
       <HeroSection />
       <IngredientsSection />
+      <ProductShowcase />
       <HowToUseSection />
       <BenefitsSection />
       <WhyChooseUsSection />
@@ -92,7 +97,7 @@ const Index = () => {
       <Footer />
       <FloatingButton />
       <HiddenAdminButton />
-    </>
+    </div>
   );
 };
 

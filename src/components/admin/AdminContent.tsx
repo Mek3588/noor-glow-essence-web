@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Edit, Plus, Trash2, Leaf, Heart, Star, Upload } from 'lucide-react';
+import { Edit, Plus, Trash2, Leaf, Heart, Star, Upload, ShoppingBag } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -18,7 +17,7 @@ const AdminContent = () => {
   const { toast } = useToast();
   const [editingItem, setEditingItem] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'benefit' | 'ingredient' | 'testimonial'>('benefit');
+  const [activeTab, setActiveTab] = useState<'benefit' | 'ingredient' | 'testimonial' | 'product'>('benefit');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -34,7 +33,6 @@ const AdminContent = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
 
-  // Filter content by type
   const filteredContent = contentItems.filter(item => item.type === activeTab);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
@@ -132,10 +130,10 @@ const AdminContent = () => {
   };
 
   const handleTabChange = (tab: string) => {
-    setActiveTab(tab as 'benefit' | 'ingredient' | 'testimonial');
+    setActiveTab(tab as 'benefit' | 'ingredient' | 'testimonial' | 'product');
     setNewItem({
       ...initialNewItem,
-      type: tab as 'benefit' | 'ingredient' | 'testimonial',
+      type: tab as 'benefit' | 'ingredient' | 'testimonial' | 'product',
     });
   };
 
@@ -147,12 +145,13 @@ const AdminContent = () => {
         return <Leaf className="w-4 h-4" />;
       case 'testimonial':
         return <Star className="w-4 h-4" />;
+      case 'product':
+        return <ShoppingBag className="w-4 h-4" />;
       default:
         return null;
     }
   };
 
-  // Returns the Dialog content for the Add New Item dialog
   const renderAddItemDialog = () => (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -184,6 +183,7 @@ const AdminContent = () => {
                 <SelectItem value="benefit">Benefit</SelectItem>
                 <SelectItem value="ingredient">Ingredient</SelectItem>
                 <SelectItem value="testimonial">Testimonial</SelectItem>
+                <SelectItem value="product">Product</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -273,7 +273,6 @@ const AdminContent = () => {
     </Dialog>
   );
 
-  // Returns the rest of the component based on what's in the existing file
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
@@ -295,9 +294,13 @@ const AdminContent = () => {
             <Star className="w-4 h-4" />
             <span>Testimonials</span>
           </TabsTrigger>
+          <TabsTrigger value="product" className="flex items-center gap-2">
+            <ShoppingBag className="w-4 h-4" />
+            <span>Products</span>
+          </TabsTrigger>
         </TabsList>
         
-        {['benefit', 'ingredient', 'testimonial'].map((type) => (
+        {['benefit', 'ingredient', 'testimonial', 'product'].map((type) => (
           <TabsContent key={type} value={type} className="space-y-4">
             {filteredContent.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-8 bg-muted rounded-lg">
@@ -384,7 +387,6 @@ const AdminContent = () => {
         ))}
       </Tabs>
       
-      {/* Edit Dialog */}
       {editingItem && (
         <Dialog open={!!editingItem} onOpenChange={(open) => {
           if (!open) {
