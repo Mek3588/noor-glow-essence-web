@@ -12,7 +12,7 @@ const CtaSection = () => {
         <RevealOnScroll>
           <div className="text-center max-w-3xl mx-auto">
             <ShoppingBag className="w-12 h-12 mx-auto mb-6 text-noor-yellow" />
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">Experience the Natural Difference</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-black">Experience the Natural Difference</h2>
             <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-white/90">
               Transform your hair with Noor Naturals Hair Essence Oil and give your hair the care it deserves.
             </p>
