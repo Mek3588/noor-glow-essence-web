@@ -63,10 +63,10 @@ const Footer = () => {
               </div>
               <div className="flex items-center">
                 <Phone className="mr-2" size={18} />
-                <span className="text-white/80">+1 (800) NOOR-123</span>
+                <span className="text-white/80">+33 1 23 45 67 89</span>
               </div>
               <p className="text-white/80 text-sm mt-4">
-                Distributed By: Noor Naturals, Luoyang, Henan, China
+                Distributed By: Noor Naturals, France
               </p>
             </div>
           </div>
