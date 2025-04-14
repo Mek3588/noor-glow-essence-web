@@ -91,9 +91,6 @@ const ProductShowcase = () => {
                   Discover our handcrafted collection of natural skincare products 
                   made with ingredients sourced from France
                 </p>
-                <p className="text-noor-olive text-sm mt-2 italic">
-                  (Customize products in the admin panel)
-                </p>
               </div>
               
               <div className="mt-6 md:mt-0 flex items-center gap-2 slide-in">
