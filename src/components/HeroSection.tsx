@@ -2,24 +2,46 @@
 import React, { useState, useEffect } from 'react';
 import { Leaf } from 'lucide-react';
 import RevealOnScroll from './RevealOnScroll';
-import { useAdmin } from '@/contexts/AdminContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const HeroSection = () => {
-  const { contentItems, isLoading } = useAdmin();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [productImages, setProductImages] = useState<string[]>([]);
   
-  // Filter product images for the carousel
-  const productImages = contentItems
-    .filter(item => item.type === 'product' && item.imageUrl)
-    .map(item => item.imageUrl);
-    
   // Fallback images if no products are added yet
   const fallbackImages = [
     'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=982&q=80',
     'https://images.unsplash.com/photo-1570194065650-d99fb4d8a609?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
     'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
   ];
+
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('miracle_growth_products')
+          .select('image_url')
+          .eq('is_active', true);
+
+        if (error) {
+          console.error('Error fetching product images:', error);
+        } else {
+          const images = data
+            .filter(item => item.image_url)
+            .map(item => item.image_url);
+          setProductImages(images);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProductImages();
+  }, []);
   
   const images = productImages.length > 0 ? productImages : fallbackImages;
   
