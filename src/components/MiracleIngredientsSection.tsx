@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Leaf, Sparkles, Shield } from 'lucide-react';
+import { Sparkles, Leaf, Heart } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import RevealOnScroll from './RevealOnScroll';
-import { Skeleton } from './ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface MiracleProduct {
   ingredients: string[];
@@ -11,7 +12,18 @@ interface MiracleProduct {
 
 const MiracleIngredientsSection = () => {
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Ingredient descriptions mapping
+  const ingredientDescriptions: { [key: string]: string } = {
+    'Coconut Oil': 'Rich in fatty acids that penetrate hair shaft, preventing protein loss and strengthening hair from within.',
+    'Jojoba Oil': 'Mimics natural scalp oils, balancing oil production and creating optimal conditions for hair growth.',
+    'Argan Oil': 'Packed with vitamin E and antioxidants, nourishes hair follicles and protects against environmental damage.',
+    'Rosemary Essential Oil': 'Stimulates blood circulation to the scalp, promoting hair growth and preventing premature graying.',
+    'Peppermint Essential Oil': 'Provides cooling sensation while increasing blood flow to hair follicles for enhanced growth.',
+    'Vitamin E': 'Powerful antioxidant that repairs damaged hair follicles and promotes healthy hair growth.',
+    'Biotin': 'Essential B-vitamin that strengthens hair structure and improves hair thickness and shine.'
+  };
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -24,94 +36,81 @@ const MiracleIngredientsSection = () => {
 
         if (error) {
           console.error('Error fetching ingredients:', error);
-        } else if (data?.ingredients) {
+        } else if (data && data.ingredients) {
           setIngredients(data.ingredients);
         }
       } catch (error) {
         console.error('Error:', error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchIngredients();
   }, []);
-
-  const ingredientDescriptions: Record<string, string> = {
-    'Coconut Oil': 'Deep moisturizing and nourishing properties for hair and scalp health',
-    'Jojoba Oil': 'Mimics natural scalp oils, promoting healthy hair growth',
-    'Argan Oil': 'Rich in vitamin E and fatty acids for hair strength and shine',
-    'Rosemary Essential Oil': 'Stimulates blood circulation to promote hair growth',
-    'Peppermint Essential Oil': 'Cooling sensation that invigorates the scalp',
-    'Vitamin E': 'Powerful antioxidant that protects and nourishes hair',
-    'Biotin': 'Essential vitamin for healthy hair growth and thickness'
-  };
-
-  if (loading) {
-    return (
-      <section className="bg-white py-16">
-        <div className="section-container">
-          <div className="text-center mb-12">
-            <Skeleton className="h-8 w-64 mx-auto mb-4" />
-            <Skeleton className="h-4 w-96 mx-auto" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-gray-50 rounded-xl p-6">
-                <Skeleton className="h-12 w-12 rounded-full mb-4" />
-                <Skeleton className="h-6 w-32 mb-2" />
-                <Skeleton className="h-4 w-full mb-1" />
-                <Skeleton className="h-4 w-3/4" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+  
   return (
-    <section id="ingredients" className="bg-white py-16">
+    <section id="ingredients" className="bg-gradient-to-br from-miracle-green/5 to-miracle-yellow/10 relative">
       <div className="section-container">
         <RevealOnScroll>
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="text-miracle-yellow" size={24} />
-              <span className="text-miracle-green font-medium">Natural Ingredients</span>
+              <Leaf className="text-miracle-green" size={32} />
+              <span className="text-miracle-green font-medium text-lg">Natural Ingredients</span>
             </div>
-            <h2 className="section-title">Pure & Powerful Formula</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our carefully selected natural ingredients work together to nourish your hair and scalp
+            <h2 className="text-4xl md:text-5xl font-bold text-miracle-brown mb-6">
+              Powerful Natural Formula
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our Miracle Growth Hair & Scalp Oil is crafted with premium natural ingredients, 
+              each carefully selected for their proven hair-nourishing and growth-promoting properties.
             </p>
           </div>
         </RevealOnScroll>
-
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {ingredients.map((ingredient, index) => (
-            <RevealOnScroll key={ingredient} delay={100 + index * 50}>
-              <div className="bg-gradient-to-br from-green-50 to-yellow-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-miracle-green rounded-full flex items-center justify-center mr-4">
-                    <Leaf className="text-white" size={24} />
+          {isLoading ? (
+            // Skeleton loaders when loading
+            Array(6).fill(0).map((_, index) => (
+              <Card key={`skeleton-${index}`} className="border-none shadow-lg bg-white">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Skeleton className="w-8 h-8 rounded-full" />
+                    <Skeleton className="h-6 w-32" />
                   </div>
-                  <h3 className="text-xl font-semibold text-miracle-brown">{ingredient}</h3>
-                </div>
-                <p className="text-gray-700 leading-relaxed">
-                  {ingredientDescriptions[ingredient] || 'A premium natural ingredient for optimal hair health'}
-                </p>
-              </div>
-            </RevealOnScroll>
-          ))}
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-5/6 mb-2" />
+                  <Skeleton className="h-4 w-4/6" />
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            ingredients.map((ingredient, index) => (
+              <RevealOnScroll key={ingredient} delay={index * 100}>
+                <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden bg-white hover:scale-105 transform group">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl font-semibold text-miracle-brown flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-miracle-green to-miracle-yellow rounded-full flex items-center justify-center">
+                        <Heart className="w-4 h-4 text-white" />
+                      </div>
+                      {ingredient}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-gray-600 leading-relaxed">
+                      {ingredientDescriptions[ingredient] || 'A premium natural ingredient known for its beneficial properties for hair and scalp health.'}
+                    </CardDescription>
+                  </CardContent>
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-miracle-yellow/20 to-miracle-green/20 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Sparkles className="w-6 h-6 text-miracle-green absolute top-2 right-2" />
+                  </div>
+                </Card>
+              </RevealOnScroll>
+            ))
+          )}
         </div>
-
-        <RevealOnScroll delay={600}>
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-2 bg-miracle-green/10 px-6 py-3 rounded-full">
-              <Shield className="text-miracle-green" size={20} />
-              <span className="text-miracle-brown font-medium">No Harmful Chemicals • Cruelty-Free • Vegan</span>
-            </div>
-          </div>
-        </RevealOnScroll>
       </div>
     </section>
   );
