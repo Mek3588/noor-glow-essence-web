@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,12 +62,12 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				noor: {
-					yellow: 'var(--noor-yellow)',
-					"yellow-light": 'var(--noor-yellow-light)',
-					olive: 'var(--noor-olive)',
-					"olive-light": 'var(--noor-olive-light)',
-					brown: 'var(--noor-brown)',
+				miracle: {
+					green: '#166534',
+					"green-light": '#22c55e',
+					yellow: '#fbbf24',
+					"yellow-light": '#fef3c7',
+					brown: '#92400e',
 				}
 			},
 			borderRadius: {

@@ -18,8 +18,7 @@ const HeroSection = () => {
   const fallbackImages = [
     'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=982&q=80',
     'https://images.unsplash.com/photo-1570194065650-d99fb4d8a609?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80',
-    'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    '/lovable-uploads/fb067b85-75b4-422d-98d5-27ebc43210d0.png'
+    'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
   ];
   
   const images = productImages.length > 0 ? productImages : fallbackImages;
@@ -30,7 +29,7 @@ const HeroSection = () => {
     
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 3000); // Change image every 3 seconds
+    }, 3000);
     
     return () => clearInterval(interval);
   }, [images.length, isLoading]);
@@ -71,17 +70,23 @@ const HeroSection = () => {
       <div className="section-container flex flex-col items-center justify-center relative z-10 min-h-screen">
         <RevealOnScroll>
           <div className="text-center mb-4 animate-fade-in">
-            <h4 className="text-lg md:text-xl text-white mb-2">100% Original</h4>
+            <h4 className="text-lg md:text-xl text-white mb-2">Premium Quality</h4>
           </div>
         </RevealOnScroll>
         
         <RevealOnScroll delay={400}>
           <div className="text-center my-8 animate-fade-in backdrop-blur-sm bg-white/30 px-6 py-4 rounded-lg">
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 relative overflow-hidden">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-noor-yellow animate-slide-in-right inline-block">
-                HAIR ESSENCE OIL
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 relative overflow-hidden">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-yellow-300 animate-slide-in-right inline-block">
+                MIRACLE GROWTH
               </span>
+            </h1>
+            <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
+              HAIR & SCALP OIL
             </h2>
+            <p className="text-lg md:text-xl text-white/90">
+              For Longer & Thicker Hair
+            </p>
           </div>
         </RevealOnScroll>
       </div>

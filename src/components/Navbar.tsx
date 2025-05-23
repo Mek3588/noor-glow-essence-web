@@ -44,15 +44,10 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center">
-              <span className="text-xl font-bold text-noor-brown">NOOR NATURALS</span>
+              <span className="text-xl font-bold text-green-800">MIRACLE GROWTH</span>
             </Link>
             <div className="ml-4 flex items-center">
-              <div className="flex h-6 w-9 mr-2 rounded overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="w-1/3 h-full bg-[#0055A4]"></div>
-                <div className="w-1/3 h-full bg-white"></div>
-                <div className="w-1/3 h-full bg-[#EF4135]"></div>
-              </div>
-              <span className="font-medium text-noor-brown">Made in France</span>
+              <span className="font-medium text-green-700">Natural Hair Care</span>
             </div>
           </div>
           
@@ -63,14 +58,14 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-noor-brown hover:text-noor-olive font-medium transition-colors"
+                  className="text-green-800 hover:text-green-600 font-medium transition-colors"
                 >
                   {item.name}
                 </a>
               ))}
               <Link
                 to="/contact"
-                className="bg-noor-olive text-white px-4 py-2 rounded-md hover:bg-noor-olive-light transition-colors"
+                className="bg-green-700 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
               >
                 Contact
               </Link>
@@ -81,7 +76,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-noor-brown hover:text-noor-olive"
+              className="text-green-800 hover:text-green-600"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -96,19 +91,11 @@ const Navbar = () => {
           )}
         >
           <div className="px-4 pt-2 pb-3 space-y-1">
-            <div className="py-2 mb-2 flex items-center">
-              <div className="flex h-5 w-8 mr-2 rounded overflow-hidden shadow-sm">
-                <div className="w-1/3 h-full bg-[#0055A4]"></div>
-                <div className="w-1/3 h-full bg-white"></div>
-                <div className="w-1/3 h-full bg-[#EF4135]"></div>
-              </div>
-              <span className="font-medium text-noor-brown">Made in France</span>
-            </div>
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="block py-2 text-noor-brown hover:text-noor-olive"
+                className="block py-2 text-green-800 hover:text-green-600"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -116,7 +103,7 @@ const Navbar = () => {
             ))}
             <Link
               to="/contact"
-              className="block py-2 mt-4 bg-noor-olive text-white px-4 rounded-md hover:bg-noor-olive-light text-center"
+              className="block py-2 mt-4 bg-green-700 text-white px-4 rounded-md hover:bg-green-600 text-center"
               onClick={() => setIsOpen(false)}
             >
               Contact
