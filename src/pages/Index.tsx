@@ -2,7 +2,8 @@
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import IngredientsSection from '@/components/IngredientsSection';
+import MiracleProductDetails from '@/components/MiracleProductDetails';
+import MiracleIngredientsSection from '@/components/MiracleIngredientsSection';
 import HowToUseSection from '@/components/HowToUseSection';
 import BenefitsSection from '@/components/BenefitsSection';
 import WhyChooseUsSection from '@/components/WhyChooseUsSection';
@@ -105,10 +106,11 @@ const Index = () => {
       <LeafDecorations />
       <Navbar />
       <HeroSection />
-      <ProductShowcase />
-      <IngredientsSection />
+      <MiracleProductDetails />
+      <MiracleIngredientsSection />
       <HowToUseSection />
       <BenefitsSection />
+      <ProductShowcase />
       <WhyChooseUsSection />
       <CtaSection />
       <Footer />

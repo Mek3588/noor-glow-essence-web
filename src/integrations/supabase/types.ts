@@ -57,6 +57,54 @@ export type Database = {
         }
         Relationships: []
       }
+      miracle_growth_products: {
+        Row: {
+          benefits: string[] | null
+          created_at: string
+          description: string | null
+          directions: string | null
+          id: string
+          image_url: string | null
+          ingredients: string[] | null
+          is_active: boolean | null
+          name: string
+          price: number | null
+          size: string | null
+          updated_at: string
+          warnings: string | null
+        }
+        Insert: {
+          benefits?: string[] | null
+          created_at?: string
+          description?: string | null
+          directions?: string | null
+          id?: string
+          image_url?: string | null
+          ingredients?: string[] | null
+          is_active?: boolean | null
+          name: string
+          price?: number | null
+          size?: string | null
+          updated_at?: string
+          warnings?: string | null
+        }
+        Update: {
+          benefits?: string[] | null
+          created_at?: string
+          description?: string | null
+          directions?: string | null
+          id?: string
+          image_url?: string | null
+          ingredients?: string[] | null
+          is_active?: boolean | null
+          name?: string
+          price?: number | null
+          size?: string | null
+          updated_at?: string
+          warnings?: string | null
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           created_at: string
