@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,12 +37,12 @@
 
     --radius: 0.5rem;
     
-    /* Custom Noor colors */
-    --noor-yellow: #FEF751;
-    --noor-yellow-light: #FEF9CD;
-    --noor-olive: #8A8B39;
-    --noor-olive-light: #B9BA63;
-    --noor-brown: #7D5A47;
+    /* Custom Miracle Growth colors */
+    --miracle-green: #166534;
+    --miracle-green-light: #22c55e;
+    --miracle-yellow: #fbbf24;
+    --miracle-yellow-light: #fef3c7;
+    --miracle-brown: #92400e;
   }
 
   * {
@@ -56,7 +57,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Lora', serif;
-    @apply font-bold text-noor-brown;
+    @apply font-bold text-miracle-brown;
   }
 }
 
@@ -70,12 +71,12 @@
   }
   
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-10 text-noor-brown relative;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-10 text-miracle-brown relative;
   }
   
   .section-title::after {
     content: '';
-    @apply absolute left-0 -bottom-2 h-1 w-20 bg-noor-olive rounded-full;
+    @apply absolute left-0 -bottom-2 h-1 w-20 bg-miracle-green rounded-full;
   }
   
   .leaf-decoration {
@@ -88,15 +89,15 @@
   }
   
   .admin-input {
-    @apply border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-noor-olive;
+    @apply border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-miracle-green;
   }
   
   .admin-button-primary {
-    @apply bg-noor-olive text-white px-4 py-2 rounded-md hover:bg-noor-olive-light transition-colors;
+    @apply bg-miracle-green text-white px-4 py-2 rounded-md hover:bg-miracle-green-light transition-colors;
   }
   
   .admin-button-secondary {
-    @apply bg-white text-noor-brown border border-noor-brown/20 px-4 py-2 rounded-md hover:bg-noor-brown/10 transition-colors;
+    @apply bg-white text-miracle-brown border border-miracle-brown/20 px-4 py-2 rounded-md hover:bg-miracle-brown/10 transition-colors;
   }
   
   /* Interactive elements */
@@ -223,7 +224,7 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, var(--noor-yellow), var(--noor-olive), var(--noor-brown));
+  background: linear-gradient(45deg, var(--miracle-yellow), var(--miracle-green), var(--miracle-brown));
   z-index: -1;
   filter: blur(15px);
   opacity: 0;
