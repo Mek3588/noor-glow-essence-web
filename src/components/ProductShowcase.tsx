@@ -89,7 +89,7 @@ const ProductShowcase = () => {
                 </h2>
                 <p className="text-gray-600 text-lg max-w-2xl slide-in">
                   Discover our handcrafted collection of natural skincare products 
-                  made with ingredients sourced from France
+                  {/* made with ingredients sourced from France */}
                 </p>
               </div>
               

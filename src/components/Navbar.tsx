@@ -46,14 +46,14 @@ const Navbar = () => {
             <Link to="/" className="flex items-center">
               <span className="text-xl font-bold text-noor-brown">NOOR NATURALS</span>
             </Link>
-            <div className="ml-4 flex items-center">
+            {/* <div className="ml-4 flex items-center">
               <div className="flex h-6 w-9 mr-2 rounded overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div className="w-1/3 h-full bg-[#0055A4]"></div>
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
               </div>
               <span className="font-medium text-noor-brown">Made in France</span>
-            </div>
+            </div> */}
           </div>
           
           {/* Desktop menu */}
@@ -96,14 +96,14 @@ const Navbar = () => {
           )}
         >
           <div className="px-4 pt-2 pb-3 space-y-1">
-            <div className="py-2 mb-2 flex items-center">
+            {/* <div className="py-2 mb-2 flex items-center">
               <div className="flex h-5 w-8 mr-2 rounded overflow-hidden shadow-sm">
                 <div className="w-1/3 h-full bg-[#0055A4]"></div>
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
               </div>
               <span className="font-medium text-noor-brown">Made in France</span>
-            </div>
+            </div> */}
             {navItems.map((item) => (
               <a
                 key={item.name}

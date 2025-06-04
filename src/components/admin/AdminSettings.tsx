@@ -392,7 +392,7 @@ const AdminSettings = () => {
                       </div>
                       
                       {/* French Flag */}
-                      <div>
+                      {/* <div>
                         <h4 className="text-sm font-medium mb-2">French Flag</h4>
                         <div className="flex items-center">
                           <div className="flex h-8 w-12 mr-3 rounded overflow-hidden shadow-md">
@@ -402,7 +402,7 @@ const AdminSettings = () => {
                           </div>
                           <span style={{ color: colors.secondary }} className="font-medium">Made in France</span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}
