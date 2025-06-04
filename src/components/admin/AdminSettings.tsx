@@ -400,7 +400,7 @@ const AdminSettings = () => {
                             <div className="w-1/3 h-full bg-white"></div>
                             <div className="w-1/3 h-full bg-[#EF4135]"></div>
                           </div>
-                          <span style={{ color: colors.secondary }} className="font-medium">Made in France</span>
+                          {/* <span style={{ color: colors.secondary }} className="font-medium">Made in France</span> */}
                         </div>
                       </div>
                     </div>

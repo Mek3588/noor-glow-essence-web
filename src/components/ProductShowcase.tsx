@@ -87,10 +87,10 @@ const ProductShowcase = () => {
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-noor-brown mb-4 slide-in">
                   Our Products
                 </h2>
-                <p className="text-gray-600 text-lg max-w-2xl slide-in">
+                {/* <p className="text-gray-600 text-lg max-w-2xl slide-in">
                   Discover our handcrafted collection of natural skincare products 
                   made with ingredients sourced from France
-                </p>
+                </p> */}
               </div>
               
               <div className="mt-6 md:mt-0 flex items-center gap-2 slide-in">

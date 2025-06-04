@@ -18,7 +18,7 @@ const Footer = () => {
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
               </div>
-              <span className="text-white font-medium text-lg">Made in France</span>
+              {/* <span className="text-white font-medium text-lg">Made in France</span> */}
             </div>
             <div className="flex space-x-4">
               <a href="#" className="text-white/80 hover:text-white transition-colors">
@@ -65,9 +65,9 @@ const Footer = () => {
                 <Phone className="mr-2" size={18} />
                 <span className="text-white/80">+33 1 23 45 67 89</span>
               </div>
-              <p className="text-white/80 text-sm mt-4">
+              {/* <p className="text-white/80 text-sm mt-4">
                 Distributed By: Noor Naturals, France
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

@@ -52,7 +52,7 @@ const Navbar = () => {
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
               </div>
-              <span className="font-medium text-noor-brown">Made in France</span>
+              {/* <span className="font-medium text-noor-brown">Made in France</span> */}
             </div>
           </div>
           
@@ -102,7 +102,7 @@ const Navbar = () => {
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
               </div>
-              <span className="font-medium text-noor-brown">Made in France</span>
+              {/* <span className="font-medium text-noor-brown">Made in France</span> */}
             </div>
             {navItems.map((item) => (
               <a
