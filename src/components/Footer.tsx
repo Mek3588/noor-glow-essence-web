@@ -60,10 +60,10 @@ const Footer = () => {
                 <Mail className="mr-2" size={18} />
                 <span className="text-white/80">hello@noornaturals.com</span>
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <Phone className="mr-2" size={18} />
                 <span className="text-white/80">+33 1 23 45 67 89</span>
-              </div>
+              </div> */}
               {/* <p className="text-white/80 text-sm mt-4">
                 Distributed By: Noor Naturals, France
               </p> */}
