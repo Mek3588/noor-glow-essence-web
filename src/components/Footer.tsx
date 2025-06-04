@@ -12,14 +12,13 @@ const Footer = () => {
             <p className="mb-4 text-white/80">
               Premium hair care products made from 100% natural ingredients.
             </p>
-            <div className="flex items-center mb-4">
+            {/* <div className="flex items-center mb-4">
               <div className="flex h-8 w-12 mr-3 rounded overflow-hidden shadow-md animate-float">
                 <div className="w-1/3 h-full bg-[#0055A4]"></div>
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
               </div>
-              {/* <span className="text-white font-medium text-lg">Made in France</span> */}
-            </div>
+            </div> */}
             <div className="flex space-x-4">
               <a href="#" className="text-white/80 hover:text-white transition-colors">
                 <Instagram size={20} />

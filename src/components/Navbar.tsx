@@ -47,11 +47,11 @@ const Navbar = () => {
               <span className="text-xl font-bold text-noor-brown">NOOR NATURALS</span>
             </Link>
             <div className="ml-4 flex items-center">
-              <div className="flex h-6 w-9 mr-2 rounded overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+              {/* <div className="flex h-6 w-9 mr-2 rounded overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div className="w-1/3 h-full bg-[#0055A4]"></div>
                 <div className="w-1/3 h-full bg-white"></div>
                 <div className="w-1/3 h-full bg-[#EF4135]"></div>
-              </div>
+              </div> */}
               {/* <span className="font-medium text-noor-brown">Made in France</span> */}
             </div>
           </div>
